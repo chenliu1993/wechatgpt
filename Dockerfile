@@ -1,5 +1,8 @@
 FROM golang:1.19-alpine as builder
 
+LABEL FORKED=houko/wechatgpt
+LABEL MAINTRAINER=cl2037829916@gmail.com
+
 RUN apk --no-cache add git && export GOPRIVATE=github.com/houko/wechatgpt && \
     export GOPROXY=https://goproxy.cn,direct
 

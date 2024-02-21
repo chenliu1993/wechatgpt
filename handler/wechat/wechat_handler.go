@@ -50,8 +50,9 @@ func (gmh *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		requestText = strings.TrimSpace(splitItems[1])
 	}
 
+	model := config.GetModel()
 	log.Println("问题：", requestText)
-	reply, err := openai.Completions(requestText)
+	reply, err := openai.Completions(requestText, *model)
 	if err != nil {
 		log.Println(err)
 		if reply != nil {
