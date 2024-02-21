@@ -20,6 +20,7 @@ type ChatGptConfig struct {
 	Telegram      *string `json:"telegram"         mapstructure:"telegram"         yaml:"telegram"`
 	TgWhitelist   *string `json:"tg_whitelist"     mapstructure:"tg_whitelist"     yaml:"tg_whitelist"`
 	TgKeyword     *string `json:"tg_keyword"       mapstructure:"tg_keyword"       yaml:"tg_keyword"`
+	OpenAIModel   *string `json:"openai_model"     mapstructure:"openai_model"     yaml:"openai_model"`
 }
 
 func LoadConfig() error {
@@ -136,6 +137,22 @@ func GetOpenAiApiKey() *string {
 		apiKey = &config.ChatGpt.Token
 	}
 	return apiKey
+}
+
+func GetModel() *string {
+	model := getEnv("openai_model")
+	if model != nil {
+		return model
+	}
+
+	if config == nil {
+		return nil
+	}
+
+	if model == nil {
+		model = config.ChatGpt.OpenAIModel
+	}
+	return model
 }
 
 func getEnv(key string) *string {

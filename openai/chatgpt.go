@@ -88,7 +88,7 @@ curl https://api.openai.com/v1/chat/completions \
 var contextMgr ContextMgr
 
 // Completions sendMsg
-func Completions(msg string) (*string, error) {
+func Completions(msg, model string) (*string, error) {
 	apiKey := config.GetOpenAiApiKey()
 	if apiKey == nil {
 		return nil, errors.New("未配置apiKey")
@@ -118,10 +118,14 @@ func Completions(msg string) (*string, error) {
 		Content: msg,
 	})
 
+	if model == "" {
+		model = "gpt-3.5-turbo"
+	}
 	requestBody := ChatGPTRequestBody{
-		Model:    "gpt-3.5-turbo",
+		Model:    model,
 		Messages: messages,
 	}
+
 	requestData, err := json.Marshal(requestBody)
 
 	if err != nil {

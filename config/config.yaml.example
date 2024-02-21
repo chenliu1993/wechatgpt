@@ -5,3 +5,4 @@ chatgpt:
   #telegram: your telegram token
   #tgWhitelist: username1,username2
   #tgKeyword: chatgpt
+  #openai_model: gpt-4
