@@ -38,16 +38,15 @@ func (gmh *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 	requestText := msg.Content
 	if wechat != nil {
 		content, key := utils.ContainsI(requestText, *wechat)
-		if len(key) == 0 {
-			return nil
+		if len(key) != 0 {
+			splitItems := strings.Split(content, key)
+			if len(splitItems) < 2 {
+				return nil
+			}
+			requestText = strings.TrimSpace(splitItems[1])
+		} else {
+			requestText = strings.TrimSpace(content)
 		}
-
-		splitItems := strings.Split(content, key)
-		if len(splitItems) < 2 {
-			return nil
-		}
-
-		requestText = strings.TrimSpace(splitItems[1])
 	}
 
 	model := config.GetModel()
@@ -57,9 +56,9 @@ func (gmh *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 		log.Println(err)
 		if reply != nil {
 			result := *reply
-			// 如果文字超过4000个字会回错，截取前4000个文字进行回复
-			if len(result) > 4000 {
-				_, err = msg.ReplyText(result[:4000])
+			// 如果文字超过8000个字会回错，截取前8000个文字进行回复
+			if len(result) > 8000 {
+				_, err = msg.ReplyText(result[:8000])
 				if err != nil {
 					log.Println("回复出错：", err.Error())
 					return err
