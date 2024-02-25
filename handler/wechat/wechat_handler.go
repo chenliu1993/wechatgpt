@@ -84,8 +84,10 @@ func (gmh *GroupMessageHandler) ReplyText(msg *openwechat.Message) error {
 	// 微信不支持markdown格式，所以把反引号直接去掉
 	if strings.Contains(result, "`") {
 		result = strings.Replace(result, "`", "", -1)
+		result = strings.Replace(result, "\n", "", 1)
 	}
 
+	reply = &result
 	if reply != nil {
 		_, err = msg.ReplyText(*reply)
 		if err != nil {
